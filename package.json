@@ -2,7 +2,7 @@
   "name": "signalwerk.md",
   "version": "1.0.0",
   "description": "Markdown tools",
-  "main": "index.js",
+  "main": "./src/index.js",
   "scripts": {
     "start": "ts-node src/test.tsx",
     "start-old": "node test.js",
@@ -26,6 +26,7 @@
   "homepage": "https://github.com/signalwerk/signalwerk.md#readme",
   "type": "module",
   "dependencies": {
+    "front-matter": "^4.0.2",
     "hastscript": "^7.1.0",
     "mdast-util-gfm-autolink-literal": "^1.0.2",
     "mdast-util-gfm-strikethrough": "^1.0.1",
@@ -42,6 +43,8 @@
     "rehype-raw": "^6.1.1",
     "rehype-sanitize": "^5.0.1",
     "rehype-stringify": "^9.0.3",
+    "remark-parse": "^10.0.1",
+    "remark-rehype": "^10.1.0",
     "ts-node": "^10.9.1",
     "unist-util-visit": "^4.1.1"
   }
