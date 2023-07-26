@@ -51,8 +51,8 @@ export const mdProcessor = ({ components } = {}) => {
         ...defaultSchema.attributes,
         ...componentAttributes,
         code: [...(defaultSchema.attributes.code || []), "className"],
-        div: [...(defaultSchema.attributes.div || []), "className"],
-        span: [...(defaultSchema.attributes.span || []), "className"],
+        div: [...(defaultSchema.attributes.div || []), "className", "style"],
+        span: [...(defaultSchema.attributes.span || []), "className", "style"],
         footer: [...(defaultSchema.attributes.footer || []), "className"],
         iframe: [
           ...(defaultSchema.attributes.iframe || []),
@@ -60,6 +60,7 @@ export const mdProcessor = ({ components } = {}) => {
           "src",
           "width",
           "height",
+          "style",
         ],
         audio: [
           ...(defaultSchema.attributes.audio || []),
@@ -295,7 +296,7 @@ function html({ language = "en", content, title = "Document", subline, info }) {
   return html;
 }
 
-export function mdToHtml(md, { processor, language = "en" } = {}) {
+export function mdToHtmlBody(md, { processor } = {}) {
   let proc = null;
 
   // try {
@@ -310,19 +311,25 @@ export function mdToHtml(md, { processor, language = "en" } = {}) {
     proc = processor.processSync(fmBody);
   }
 
-  const h1 = proc.data.title;
+  return { data: fmHeader, html: proc };
+}
+
+export function mdToHtml(md, { processor, language = "en" } = {}) {
+  const { data, html } = mdToHtmlBody(md, { processor });
+
+  const h1 = html.data.title;
   // const frontmatter = proc.data.matter;
 
   // console.log("proc", proc);
   // const h1 = getFirstH1(proc);
-  const content = proc.toString();
+  const content = html.toString();
 
   return html({
     language,
     content,
-    title: fmHeader.title || h1,
-    subline: fmHeader.subline,
-    info: fmHeader.info,
+    title: data.title || h1,
+    subline: data.subline,
+    info: data.info,
   });
   // console.log("processing", md);
   // return processor.process(md);

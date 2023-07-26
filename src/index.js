@@ -1,3 +1,3 @@
-import { mdToHtml, mdProcessor } from "./processor.js";
+import { mdToHtml, mdProcessor, mdToHtmlBody } from "./processor.js";
 
-export { mdToHtml, mdProcessor };
+export { mdToHtml, mdProcessor, mdToHtmlBody };
