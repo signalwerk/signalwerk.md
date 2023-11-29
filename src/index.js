@@ -1,3 +1,6 @@
-import { mdToHtml, mdProcessor, mdToHtmlBody } from "./processor.js";
+import { mdProcessor } from "./processor.js";
 
-export { mdToHtml, mdProcessor, mdToHtmlBody };
+export const mdToHtmlSync = (md) => {
+  const html = mdProcessor().processSync(md);
+  return { html };
+};
