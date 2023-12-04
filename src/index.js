@@ -9,7 +9,7 @@ export function astToText(node) {
   }
 
   if (node.children) {
-    text.push(node.children.map(extractTextFromNode).join(" "));
+    text.push(node.children.map(astToText).join(" "));
   }
 
   return text.join(" ");
