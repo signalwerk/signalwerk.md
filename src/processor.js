@@ -14,7 +14,7 @@ import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import rehypeExternalLinks from "rehype-external-links";
 import { remarkGfm } from "./gfm.js";
 
-export const mdProcessor = ({ components } = {}) => {
+export const astProcessor = () => {
   const processor = unified()
     .use(remarkParse)
     .use(rehypeH1, { level: 1 })
@@ -59,8 +59,13 @@ export const mdProcessor = ({ components } = {}) => {
     })
 
     .use(rehypeExternalLinks, { target: "_blank", rel: ["nofollow"] })
-    .use(remarkGfm)
-    .use(rehypeStringify);
+    .use(remarkGfm);
+  // .use(rehypeStringify);
+
+  return processor;
+};
+export const htmlProcessor = () => {
+  const processor = astProcessor().use(rehypeStringify);
 
   return processor;
 };
