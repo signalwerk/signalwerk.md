@@ -33,6 +33,7 @@ export function renderNode(node) {
       return <li>{node.children.map(renderNode)}</li>;
 
     default:
+      console.warn("Unsupported node type: ", node.type);
       return <div>!!! Unsupported node type: {node.type}</div>;
   }
 }
