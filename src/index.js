@@ -2,7 +2,7 @@ import { htmlProcessor, astProcessor } from "./processor.js";
 
 export const mdToHtmlSync = (md) => {
   const html = htmlProcessor().processSync(md);
-  return { html };
+  return { html: html.toString() };
 };
 
 export const mdToAstSync = (md) => {
