@@ -1,9 +1,10 @@
-export function renderNode(node) {
+// node as mdast
+export function renderNode(node, { index = null, parent = null } = {}) {
   if (!node) return;
 
   switch (node.type) {
     case "root":
-      return <div>{node.children.map(renderNode)}</div>;
+      return <div className="text">{node.children.map(renderNode)}</div>;
 
     case "heading":
       const HeadingTag = `h${node.depth}`;
@@ -14,6 +15,56 @@ export function renderNode(node) {
 
     case "paragraph":
       return <p>{node.children.map(renderNode)}</p>;
+
+    case "emphasis":
+      return <em>{node.children.map(renderNode)}</em>;
+
+    case "strong":
+      return <strong>{node.children.map(renderNode)}</strong>;
+
+    case "delete":
+      return <del>{node.children.map(renderNode)}</del>;
+
+    case "inlineCode":
+      return <code>{node.value}</code>;
+
+    case "code":
+      return (
+        <pre>
+          <code>{node.value}</code>
+        </pre>
+      );
+
+    case "blockquote":
+      return <blockquote>{node.children.map(renderNode)}</blockquote>;
+
+    case "table":
+      return (
+        <table>
+          {node.children.map((child, idx) =>
+            renderNode(child, { index: idx, parent: node })
+          )}
+        </table>
+      );
+
+    case "tableRow":
+      const isHeaderRow = index === 0;
+      return (
+        <tr>
+          {node.children.map((child, idx) =>
+            renderNode(child, { index: idx, parent: { ...node, isHeaderRow } })
+          )}
+        </tr>
+      );
+
+    case "tableCell":
+      const CellTag = parent?.isHeaderRow ? "th" : "td";
+      return (
+        <CellTag>{node.children.map((child) => renderNode(child))}</CellTag>
+      );
+
+    case "break":
+      return <br />;
 
     case "link":
       return (
@@ -33,7 +84,12 @@ export function renderNode(node) {
       return <li>{node.children.map(renderNode)}</li>;
 
     default:
-      console.warn("Unsupported node type: ", node.type);
-      return <div>!!! Unsupported node type: {node.type}</div>;
+      console.warn("Unsupported node type: ", node?.type);
+      return (
+        <>
+          <p>!!! ERROR Unsupported node type: {node?.type}</p>
+          <pre>{JSON.stringify(node, null, 2)}</pre>
+        </>
+      );
   }
 }
