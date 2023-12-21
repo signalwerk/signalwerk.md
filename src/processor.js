@@ -4,7 +4,7 @@ import remarkRehype from "remark-rehype";
 import rehypeRaw from "rehype-raw";
 import rehypeHighlight from "rehype-highlight";
 import rehypeStringify from "rehype-stringify";
-import { visit } from "unist-util-visit";
+import visit from "unist-util-visit";
 import fm from "front-matter";
 
 // process pictures https://github.com/rehypejs/rehype-picture
