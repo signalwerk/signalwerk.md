@@ -83,6 +83,18 @@ export function renderNode(node, { index = null, parent = null } = {}) {
     case "listItem":
       return <li>{node.children.map(renderNode)}</li>;
 
+    case "html":
+      // we need to have a wrapper around the html.
+      // mark it to be able to remove it later
+      return (
+        <span
+          className="--node-remove-html-start"
+          dangerouslySetInnerHTML={{
+            __html: `${node.value}<span class="--node-remove-html-end"></span>`,
+          }}
+        />
+      );
+
     default:
       console.warn("Unsupported node type: ", node?.type);
       return (
