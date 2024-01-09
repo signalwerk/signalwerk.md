@@ -1,6 +1,13 @@
 // node as mdast
-export function renderNode(node, { index = null, parent = null } = {}) {
+export function renderNode(node, configuration) {
   if (!node) return;
+
+  const { tableIndex, parent } = configuration || {};
+
+  // if node is an array, process each item
+  if (Array.isArray(node)) {
+    return node.map((item) => renderNode(item, configuration));
+  }
 
   switch (node.type) {
     case "root":
@@ -22,6 +29,12 @@ export function renderNode(node, { index = null, parent = null } = {}) {
     case "strong":
       return <strong>{node.children.map(renderNode)}</strong>;
 
+    case "footnoteReference":
+      return <sup className="footnote-reference">!{node.index}</sup>;
+
+    // case "footnoteDefinition":
+    //   return <sup className="footnote-definitio">!{node.index}</sup>;
+
     case "delete":
       return <del>{node.children.map(renderNode)}</del>;
 
@@ -42,17 +55,20 @@ export function renderNode(node, { index = null, parent = null } = {}) {
       return (
         <table>
           {node.children.map((child, idx) =>
-            renderNode(child, { index: idx, parent: node })
+            renderNode(child, { tableIndex: idx, parent: node })
           )}
         </table>
       );
 
     case "tableRow":
-      const isHeaderRow = index === 0;
+      const isHeaderRow = tableIndex === 0;
       return (
         <tr>
           {node.children.map((child, idx) =>
-            renderNode(child, { index: idx, parent: { ...node, isHeaderRow } })
+            renderNode(child, {
+              tableIndex: idx,
+              parent: { ...node, isHeaderRow },
+            })
           )}
         </tr>
       );
