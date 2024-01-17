@@ -121,3 +121,67 @@ export function renderNode(node, configuration) {
       );
   }
 }
+
+export function extractPlainText(node) {
+  if (!node) return "";
+
+  // if node is an array, process each item and join the results
+  if (Array.isArray(node)) {
+    return node.map(extractPlainText).join("");
+  }
+
+  switch (node.type) {
+    case "root":
+    case "emphasis":
+    case "strong":
+    case "delete":
+    case "list":
+    case "listItem":
+      return node.children.map(extractPlainText).join("");
+
+    case "heading":
+      return node.children.map(extractPlainText).join("") + "\n";
+
+    case "text":
+    case "inlineCode":
+      return node.value;
+
+    case "code":
+      return node.value + "\n";
+
+    case "paragraph":
+      return node.children.map(extractPlainText).join("") + "\n";
+
+    case "blockquote":
+      return "> " + node.children.map(extractPlainText).join("") + "\n";
+
+    case "table":
+      return node.children.map(extractPlainText).join("") + "\n";
+
+    case "tableRow":
+      return node.children.map(extractPlainText).join("\t") + "\n";
+
+    case "tableCell":
+      return node.children.map(extractPlainText).join("");
+
+    case "break":
+      return "\n";
+
+    case "link":
+      return node.children.map(extractPlainText).join("");
+
+    case "thematicBreak":
+      return "\n---\n";
+
+    case "footnoteReference":
+      return `[${node.index}]`;
+
+    case "html":
+      // Since we are extracting plain text, we ignore any HTML content
+      return "";
+
+    default:
+      console.warn("Unsupported node type: ", node?.type);
+      return "";
+  }
+}
