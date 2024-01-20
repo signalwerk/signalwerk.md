@@ -30,10 +30,18 @@ export function renderNode(node, configuration) {
       return <strong>{node.children.map(renderNode)}</strong>;
 
     case "footnoteReference":
-      return <sup className="footnote-reference">!{node.index}</sup>;
+      return (
+        <sup className="footnote-reference" data-id={node.identifier}>
+          {node.index}
+        </sup>
+      );
 
-    // case "footnoteDefinition":
-    //   return <sup className="footnote-definitio">!{node.index}</sup>;
+    case "footnoteDefinition":
+      return (
+        <div className="footnote-definition" data-id={node.identifier}>
+          {node.children.map(renderNode)}
+        </div>
+      );
 
     case "delete":
       return <del>{node.children.map(renderNode)}</del>;
@@ -111,11 +119,16 @@ export function renderNode(node, configuration) {
         />
       );
 
+    case "noop":
+      return <></>;
+
     default:
       console.warn("Unsupported node type: ", node?.type);
       return (
         <>
-          <p>!!! ERROR Unsupported node type: {node?.type}</p>
+          <p>
+            !!! ERROR Unsupported node type: "<code>{node?.type}</code>"
+          </p>
           <pre>{JSON.stringify(node, null, 2)}</pre>
         </>
       );
