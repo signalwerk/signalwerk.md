@@ -90,12 +90,20 @@ export function renderNode(node, configuration) {
     case "break":
       return <br />;
 
-    case "link":
-      return (
-        <a href={node.url} title={node.title} target="_blank" rel="noreferrer">
-          {node.children.map(renderNode)}
-        </a>
-      );
+    case "link": {
+      const attr = {
+        href: node.url,
+        title: node.title,
+      };
+
+      // is external link
+      if (node.url.startsWith("http")) {
+        attr.target = "_blank";
+        attr.rel = "noreferrer";
+      }
+
+      return <a {...attr}>{node.children.map(renderNode)}</a>;
+    }
 
     case "thematicBreak":
       return <hr />;
