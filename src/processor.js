@@ -139,6 +139,19 @@ export function mdToHtmlBody(md, { processor } = {}) {
   return { data: fmHeader, html: proc };
 }
 
+/**
+ * Extract frontmatter from markdown content
+ * @param {string} md - Markdown content with optional frontmatter
+ * @returns {Object} - Object with frontmatter attributes and body content
+ */
+export function extractFrontmatter(md) {
+  const frontmatter = fm(md);
+  return {
+    attributes: frontmatter.attributes,
+    body: frontmatter.body
+  };
+}
+
 export function mdToHtml(md, { processor, language = "en" } = {}) {
   const { data, html } = mdToHtmlBody(md, { processor });
   const h1 = html.data.title;
