@@ -63,7 +63,7 @@ export function renderNode(node, configuration) {
       return (
         <table>
           {node.children.map((child, idx) =>
-            renderNode(child, { tableIndex: idx, parent: node })
+            renderNode(child, { tableIndex: idx, parent: node }),
           )}
         </table>
       );
@@ -76,7 +76,7 @@ export function renderNode(node, configuration) {
             renderNode(child, {
               tableIndex: idx,
               parent: { ...node, isHeaderRow },
-            })
+            }),
           )}
         </tr>
       );

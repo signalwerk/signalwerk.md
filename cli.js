@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import {  mdToHtmlSync } from "./src/index.js";
+import { mdToHtmlSync } from "./src/index.js";
 import fs from "fs";
 import path from "path";
 
@@ -43,7 +43,7 @@ const outputFileName = inputFileName.replace(inputFileExtension, ".html");
 // Generate the output file path by replacing the input file name with the output file name
 const outputFilePath = mainFile.replace(inputFileName, outputFileName);
 
-const html = mdToHtmlFile(md, { language, title, subline, info});
+const html = mdToHtmlFile(md, { language, title, subline, info });
 fs.writeFileSync(outputFilePath, html);
 
 function mdToHtmlFile(md, options) {

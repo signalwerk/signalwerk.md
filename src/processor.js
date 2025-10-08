@@ -148,7 +148,7 @@ export function extractFrontmatter(md) {
   const frontmatter = fm(md);
   return {
     attributes: frontmatter.attributes,
-    body: frontmatter.body
+    body: frontmatter.body,
   };
 }
 
